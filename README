@@ -1,0 +1,16 @@
+1.概要
+AS3製のロガークラスです。
+trace と console.log（IEのように console.log がない場合はステータスバー）にログを出力します。
+どちらに出力するか、または出力しない、等は変更可能です。
+
+2.出力はこんな感じになるよ
+[2010-1-25T3:25:57] LoggerDrive#initialize() MovieClipの場合<String>,instance1<flash.display::MovieClip>
+
+3.とりあえず試してみたい場合のbuild 方法
+ant -f build/build.xml build
+で bin/ に .swf ができます。
+
+4.環境
+AS3 で動作します。
+お使いのプロジェクトに logger.Logger.as を組み込めば良いです。
+
