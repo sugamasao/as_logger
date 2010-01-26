@@ -126,7 +126,7 @@ package as_logger {
 					fileName = targetLine.match( /at .+\[(.*)\:\d+\]/)[1];
 				} else {
 					// ファイル名だけ
-					fileName = targetLine.match( /at .+\[\/.+\/(.*)\:\d+\]/)[1];
+					fileName = targetLine.match( /at .+\[\/.+[\/\\](.*)\:\d+\]/)[1];
 				}
 				methodName = targetLine.match( /at (.+)\[.+[\.|\\]as\:\d+\]/)[1].replace("/", "#");
 				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
