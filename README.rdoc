@@ -1,16 +1,59 @@
-1.概要
-AS3製のロガークラスです。
-trace と console.log（IEのように console.log がない場合はステータスバー）にログを出力します。
-どちらに出力するか、または出力しない、等は変更可能です。
+= as_logger.Logger Class
 
-2.出力はこんな感じになるよ
-[2010-1-25T3:25:57] LoggerDrive#initialize() MovieClipの場合<String>,instance1<flash.display::MovieClip>
+== Description
 
-3.とりあえず試してみたい場合のbuild 方法
-ant -f build/build.xml build
-で bin/ に .swf ができます。
+AS3製のログクラスです。
+特徴は以下の通りです。
 
-4.環境
-AS3 で動作します。
-お使いのプロジェクトに logger.Logger.as を組み込めば良いです。
+* Traceログとブラウザ上の console.log(無い場合は window.status) へ出力（出力先は変更可能）
+* 渡されたオブジェクトはできるだけ展開し、文字列形式へ変形して出力します
+* Logger.log メソッドを呼んだメソッド名やクラス名を出力します
+* -compile.debug が true でコンパイルしている場合はソースファイル名や行数を出力することが可能です
+
+== Synopsis
+
+=== use code
+
+  import as_logger.Logger
+
+  Logger.log({"hoge":this, "fuga":1});
+  Logger.log("MovieClip", new MovieClip());
+
+=== result(use -compile.debug)
+
+  [2010-1-27T0:6:35] LoggerDrive.as:33@LoggerDrive#initialize() [hoge<String>:root1<LoggerDrive>,fuga<String>:1<int>]<Object>
+  [2010-1-27T0:6:35] LoggerDrive.as:35@LoggerDrive#initialize() MovieClip<String>,instance1<flash.display::MovieClip>
+
+=== result(not use -compile.debug)
+
+  [2010-1-26T23:35:45] LoggerDrive#initialize() [hoge<String>:root1<LoggerDrive>,fuga<String>:1<int>]<Object>
+  [2010-1-26T23:35:45] LoggerDrive#initialize() MovieClip<String>,instance1<flash.display::MovieClip>
+
+== options
+
+=== ログ出力の動作を変更することが可能です。
+debug フラグが有効な場合のファイルパスの出力方法について
+* Logger.isFullPath = true  // ファイル名をフルパスで表示
+* Logger.isFullPath = false // ファイル名のみを出力（デフォルト）
+ログの出力先について
+* Logger.writeTarget = Logger.WRITE_TARGET_FULL         // すべての出力先に出力します(デフォルト)
+* Logger.writeTarget = Logger.WRITE_TARGET_TRACE_ONLY   // trace にのみ出力します
+* Logger.writeTarget = Logger.WRITE_TARGET_CONSOLE_ONLY // JSの console.log なければ window.status に出力します
+* Logger.writeTarget = Logger.# WRITE_TARGET_NOTTHING   // ログを出力しません。整形処理もおこないませんので、パフォーマンスへの影響は最小になります
+
+== Features/Problems
+
+* ビルドや動作確認は MacOSX で確認しています。
+* コンパイラは FlexSDK 3.4 でビルドしています。
+* Firefox3.5 safari4.1 で動作を確認しています。
+
+=== IE での動作について
+* IE8 の場合、開発者ツール（F12）でのウィンドウを出していないと console.log が有効になりません。
+* IE7 の場合はセキュリティ設定を変更すれば、ステータスバーにログが出力されます。
+* IE6 ステータスバーに出力されます
+
+== Copyright
+
+Author:: sugamasao <sugamasao@gmail.com>
+License:: お好きなように
 
