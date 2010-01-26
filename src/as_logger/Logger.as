@@ -118,6 +118,7 @@ package as_logger {
 			var fileName:String = "";
 			var methodName:String = "";
 			var lineNumber:String = "";
+			// ref.http://d.hatena.ne.jp/terracken/20080409/1207699049
 			try {
 				targetLine = stackTrace.split("\n")[2];
 				if(isFullPath) {
@@ -234,6 +235,7 @@ package as_logger {
 					}
 				]]>
 				script = script.replace(/\r?\n|\r/g, "");
+				message = message.replace(/\\/g, "\\\\");
 				ExternalInterface.call(script, message);
 			}
 		}
