@@ -74,7 +74,7 @@
 
 	<!-- cleanの実行 -->
 	<target name="clean">
-		<delete dir="${BIN_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
+		<delete file="${BIN_OUTPUT}/${APP_NAME}.swf" />
 		<delete dir="${ASDOC_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
 		<delete dir="${PMD_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
 	</target>

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * as_lgger.Logger クラス
  */
 package as_logger {
@@ -123,15 +123,15 @@ package as_logger {
 				targetLine = stackTrace.split("\n")[2];
 				if(isFullPath) {
 					// フルのファイルパス
-					fileName = targetLine.match( /at .+\[(.*)\:\d+\]/)[1];
+					fileName = targetLine.match( /at .+\[(.*\..+)\:\d+\]/)[1];
 				} else {
 					// ファイル名だけ
-					fileName = targetLine.match( /at .+\[\/.+[\/\\](.*)\:\d+\]/)[1];
+					fileName = targetLine.match( /at .+\[.+[\/|\\](.*\..+)\:\d+\]/)[1];
 				}
 				methodName = targetLine.match( /at (.+)\[.+[\.|\\]as\:\d+\]/)[1].replace("/", "#");
 				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
 				debugInfo  = fileName + ":" + lineNumber + "@" + methodName;
-			} catch(e:Error) {
+			} catch (e:Error) {
 				debugInfo = targetLine.match( /at (.+)/)[1].replace("/", "#");
 			}
 	
