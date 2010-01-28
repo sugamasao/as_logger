@@ -10,6 +10,9 @@ AS3製のログクラスです。
 * Logger.log メソッドを呼んだメソッド名やクラス名を出力します
 * -compile.debug が true でコンパイルしている場合はソースファイル名や行数を出力することが可能です
 
+以下に ASDoc があります。
+* http://sugamasao.github.com/as_logger
+
 == Synopsis
 
 === use code
