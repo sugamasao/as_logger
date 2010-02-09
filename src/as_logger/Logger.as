@@ -1,9 +1,12 @@
 ﻿/**
- * as_lgger.Logger クラス
+ * com.github.sugamasao.as_logger.Logger クラス
+ * repository : http://github.com/sugamasao/as_logger
  */
-package as_logger {
+package com.github.sugamasao.as_logger {
 
 	import flash.external.ExternalInterface;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
@@ -13,7 +16,7 @@ package as_logger {
 	 *  @author sugamasao
 	 * - 実行方法
 	 *  Logger.log("hoge") // 引数は複数渡すことが可能
-	 *  Logger.log(obj. "fuga") // 引数は複数渡すことが可能
+	 *  Logger.log(obj, "fuga") // 引数は複数渡すことが可能
 	 * 
 	 */
 	public class Logger {
@@ -164,29 +167,48 @@ package as_logger {
 			var className:String = getQualifiedClassName(obj);
 			var result:Array = [];
 			var resultMessage:String = "";
+			var isClassNameShow:Boolean = true;
 			
-			if(className === "Object" || className === "Dictionary") {
+			if(obj is String) {
+				resultMessage = '"'+obj+'"';
+				isClassNameShow = false;
+			} else if(obj == null) {
+				resultMessage = "`null`";
+				isClassNameShow = false;
+			} else if(className === "Object" || obj is Dictionary) {
 				for (var key:* in obj) {
 					result.push(parseObject(key) + ":" + parseObject(obj[key]));
 				}
-				resultMessage = "[" + result.join(",") + "]";
-			} else if(className === "Array") {
+				resultMessage = "{" + result.join(",") + "}";
+			} else if(obj is Array) {
 				for each(var a:* in obj) {
 					result.push(parseObject(a));
 				}
 				resultMessage = "[" + result.join(",") + "]";
+			} else if(obj is URLLoader) {
+				if(obj.dataFormat == URLLoaderDataFormat.TEXT || obj.dataFormat == URLLoaderDataFormat.VARIABLES) {
+					resultMessage = "[dataFormat=" + obj.dataFormat + " data=" + obj.data.toString() + "]";
+				} else {
+					resultMessage = "[dataFormat=" + obj.dataFormat + " data=<BINARY>]";
+				}
 			} else {
-				if(obj.toString().match(/\[object /)) { // [object hoge] の場合
-					if(obj.name) {
+				if(obj.toString().match(/\[object /) || obj.hasOwnProperty("name")) { // [object hoge] か Sprite 系の場合
+					if(obj.hasOwnProperty("name")) {
 						resultMessage = obj.name;
+						if(obj.hasOwnProperty("source")) { // Flex の Image 等の場合を考慮.
+							resultMessage += "(" + obj.source.toString() + ")";
+						}
 					}
 				}
 				if(resultMessage == "") {
 					resultMessage = obj.toString();
 				}
 			}
-	
-			return resultMessage + "<" + className + ">";
+			
+			// 改行を除去
+			resultMessage = resultMessage.replace(/\r?\n|\r/g, "");
+			
+			return isClassNameShow ? (resultMessage + "<" + className + ">") : resultMessage;
 		}
 	
 		/**
