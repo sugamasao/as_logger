@@ -1,4 +1,4 @@
-= as_logger.Logger Class
+= com.github.sugamasao.as_logger.Logger Class
 
 == Description
 
@@ -17,20 +17,20 @@ AS3製のログクラスです。
 
 === use code
 
-  import as_logger.Logger
+  import com.github.sugamasao.as_logger.Logger
 
   Logger.log({"hoge":this, "fuga":1});
   Logger.log("MovieClip", new MovieClip());
 
 === result(use -compile.debug)
 
-  [2010-1-27T0:6:35] LoggerDrive.as:33@LoggerDrive#initialize() [hoge<String>:root1<LoggerDrive>,fuga<String>:1<int>]<Object>
-  [2010-1-27T0:6:35] LoggerDrive.as:35@LoggerDrive#initialize() MovieClip<String>,instance1<flash.display::MovieClip>
+  [2010-1-27T0:6:35] LoggerDrive.as:33@LoggerDrive#initialize() {"fuga":1<int>,"hoge":root1<LoggerDrive>}<Object>
+  [2010-1-27T0:6:35] LoggerDrive.as:35@LoggerDrive#initialize() "MovieClip",instance1<flash.display::MovieClip>
 
 === result(not use -compile.debug)
 
-  [2010-1-26T23:35:45] LoggerDrive#initialize() [hoge<String>:root1<LoggerDrive>,fuga<String>:1<int>]<Object>
-  [2010-1-26T23:35:45] LoggerDrive#initialize() MovieClip<String>,instance1<flash.display::MovieClip>
+  [2010-2-10T0:33:42] LoggerDrive#initialize() {"fuga":1<int>,"hoge":root1<LoggerDrive>}<Object>
+  [2010-2-10T0:33:42] LoggerDrive#initialize() "MovieClip",instance1<flash.display::MovieClip>
 
 == options
 
