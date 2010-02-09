@@ -6,7 +6,7 @@ package {
 
 	import flash.events.Event;
 	import flash.display.MovieClip;
-	import as_logger.Logger;
+	import com.github.sugamasao.as_logger.Logger;
 
 	/**
 	 * Loggerクラスの動作確認用のクラスです
