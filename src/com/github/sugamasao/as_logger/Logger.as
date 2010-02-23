@@ -192,7 +192,7 @@ package com.github.sugamasao.as_logger {
 					resultMessage = "[dataFormat=" + obj.dataFormat + " data=<BINARY>]";
 				}
 			} else if(obj is Error) {
-					resultMessage = "[errorID=" + obj.errorID + + " message=" + obj.message + " name=" + obj.name + "]";
+					resultMessage = "[errorID=" + obj.errorID + " message=" + obj.message + " name=" + obj.name + "]";
 			} else {
 				if(obj.toString().match(/\[object /) || obj.hasOwnProperty("name")) { // [object hoge] か Sprite 系の場合
 					if(obj.hasOwnProperty("name")) {
