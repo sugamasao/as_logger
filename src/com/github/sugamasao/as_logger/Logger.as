@@ -21,6 +21,9 @@ package com.github.sugamasao.as_logger {
 	 */
 	public class Logger {
 		
+		// include Version file. "public const VERSION"
+		include "Version.as";
+		
 		/**
 		 * writeTarget 設定用定数.
 		 *
@@ -89,23 +92,29 @@ package com.github.sugamasao.as_logger {
 		 * 
 		 * @param args 出力内容(複数可)
 		 */
-		public static function log(... args):void {
+		public static function log(... args):String {
 			// ログ出力なしの設定だったら何もしないよ
 			if(writeTarget === WRITE_TARGET_NOTHING) {
-				return;
+				return "";
 			}
-	
+			
 			var debugInfo:String = getMetaData(new Error().getStackTrace());
 			var argsInfo:Array =[];
-			for each(var arg:* in args) {
-				argsInfo.push(parseObject(arg));
+			try {
+				for each(var arg:* in args) {
+					argsInfo.push(parseObject(arg));
+				}
+			} catch(e:Error) {
+				argsInfo.push("{###parseObjectError###}")
 			}
 			var dateInfo:String = createDateFormat(new Date);
-	
+			
 			var message:String = [dateInfo, debugInfo, argsInfo.join(",")].join(" ");
-	
+			
 			// 整形したテキストを出力します
 			writeLog(writeTarget, message);
+			
+			return message;
 	    }
 	
 		/**
@@ -135,7 +144,11 @@ package com.github.sugamasao.as_logger {
 				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
 				debugInfo  = fileName + ":" + lineNumber + "@" + methodName;
 			} catch (e:Error) {
-				debugInfo = targetLine.match( /at (.+)/)[1].replace("/", "#");
+				try {
+					debugInfo = targetLine.match( /at (.+)/)[1].replace("/", "#");
+				} catch (e2:Error) {
+					debugInfo = "{###class or method get error###}"
+				}
 			}
 	
 			return debugInfo;
@@ -198,10 +211,21 @@ package com.github.sugamasao.as_logger {
 					if(obj.hasOwnProperty("name")) {
 						resultMessage = obj.name;
 						if(obj.hasOwnProperty("source")) { // Flex の Image 等の場合を考慮.
-							resultMessage += "(" + obj.source.toString() + ")";
+							resultMessage += "(source:" + parseObject(obj.source) + ")";
 						}
 					}
 				}
+				
+				// イテレータブルなオブジェクトだったら再帰的に処理をする
+				if(obj.hasOwnProperty("length")) { // 
+					var listMessage:Array = [];
+					for each(var list:* in obj) {
+						listMessage.push(parseObject(list))
+					}
+					resultMessage += "[" + listMessage.join(",")  + "]"
+					resultMessage += "(length:" + obj.length.toString() + ")";
+				}
+				
 				if(resultMessage == "") {
 					resultMessage = obj.toString();
 				}
