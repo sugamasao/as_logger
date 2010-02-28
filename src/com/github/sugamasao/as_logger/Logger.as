@@ -22,7 +22,7 @@ package com.github.sugamasao.as_logger {
 	public class Logger {
 		
 		// include Version file. "public const VERSION"
-		include "Version.as";
+		include "./Version.as";
 		
 		/**
 		 * writeTarget 設定用定数.
@@ -200,7 +200,7 @@ package com.github.sugamasao.as_logger {
 				resultMessage = "[" + result.join(",") + "]";
 			} else if(obj is URLLoader) {
 				if(obj.dataFormat == URLLoaderDataFormat.TEXT || obj.dataFormat == URLLoaderDataFormat.VARIABLES) {
-					resultMessage = "[dataFormat=" + obj.dataFormat + " data=" + obj.data.toString() + "]";
+					resultMessage = "[dataFormat=" + obj.dataFormat + " data=" + parseObject(obj.data) + "]";
 				} else {
 					resultMessage = "[dataFormat=" + obj.dataFormat + " data=<BINARY>]";
 				}
