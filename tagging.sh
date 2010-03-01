@@ -23,7 +23,7 @@ VERSION=`${GREP} VERSION ${VERSION_FILE} | ${AWK} -F\" '{print $2}'`
 #######################
 # chekc
 #######################
-INPUT_MESSAGE="tagging version ${VERSION} ok?[Y/n]"
+INPUT_MESSAGE="tagging version [${VERSION}] ok?[Y/n]"
 
 # OK Cancel のアレ
 while [ "${READ_KEY}" != "Y" ] && [ "${READ_KEY}" != "n" ]; do
