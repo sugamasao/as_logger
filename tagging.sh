@@ -11,14 +11,30 @@ MY_DIR=`dirname ${0}`
 #######################
 AWK=/usr/bin/awk
 GREP=/usr/bin/grep
-VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/as_logger/Version.as
 GIT=/opt/local/bin/git
 GIT_REMOTE_NAME=as_logger
+VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/as_logger/Version.as
 
 #######################
 # get version
 #######################
 VERSION=`${GREP} VERSION ${VERSION_FILE} | ${AWK} -F\" '{print $2}'`
+
+#######################
+# chekc
+#######################
+INPUT_MESSAGE="tagging version ${VERSION} ok?[Y/n]"
+
+# OK Cancel のアレ
+while [ "${READ_KEY}" != "Y" ] && [ "${READ_KEY}" != "n" ]; do
+echo -n "${INPUT_MESSAGE} "
+	read READ_KEY;
+done;
+
+# n だったら終了するよ
+if [ "${READ_KEY}" = "n" ]; then
+	exit 1;
+fi
 
 #######################
 # exec
