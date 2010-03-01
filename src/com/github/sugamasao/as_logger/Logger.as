@@ -206,6 +206,8 @@ package com.github.sugamasao.as_logger {
 				}
 			} else if(obj is Error) {
 					resultMessage = "[errorID=" + obj.errorID + " message=" + obj.message + " name=" + obj.name + "]";
+			} else if(obj is XML) {
+					resultMessage = obj.toXMLString();
 			} else {
 				if(obj.toString().match(/\[object /) || obj.hasOwnProperty("name")) { // [object hoge] か Sprite 系の場合
 					if(obj.hasOwnProperty("name")) {

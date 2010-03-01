@@ -55,6 +55,10 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 * IE7 の場合はセキュリティ設定を変更すれば、ステータスバーにログが出力されます。
 * IE6 ステータスバーに出力されます
 
+
+=== CHANGE LOG. ===
+* v1.4 XML の出力を修正
+
 == Copyright
 
 Author:: sugamasao <sugamasao@gmail.com>

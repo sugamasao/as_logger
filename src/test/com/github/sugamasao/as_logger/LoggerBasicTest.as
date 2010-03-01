@@ -7,6 +7,7 @@ package test.com.github.sugamasao.as_logger
 	import com.github.sugamasao.as_logger.Logger;
 
 	import flash.display.Sprite;
+	import flash.events.*;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.utils.Dictionary;
@@ -17,7 +18,7 @@ package test.com.github.sugamasao.as_logger
 	/**
 	 * Logger クラスのテスト用クラス
 	 */
-	public class LoggerTest {
+	public class LoggerBasicTest {
 
 		private var className:String = "";
 
@@ -29,7 +30,7 @@ package test.com.github.sugamasao.as_logger
 		 */
 		[Before]
 		public function alsoRunBeforeEveryTest():void { 
-			trace("before");
+//			trace("before");
 		}
 
 		/*
@@ -37,7 +38,7 @@ package test.com.github.sugamasao.as_logger
 		 */
 		[After]
 		public function runAfterEveryTest():void {
-			trace("after");
+//			trace("after");
 			className = null; 
 		}
 
@@ -112,6 +113,61 @@ package test.com.github.sugamasao.as_logger
 			className = getQualifiedClassName(sprite);
 			sprite.name = name;
 			assertThat(Logger.log(sprite), containsString(name + "<" + className + ">"));
+		}
+
+		[Test(description="ログ確認のテスト(入れ子なオブジェクト)")]
+		public function loggerLogObjectSpriteTest():void {
+			var name:String = "sprite test";
+			var sprite:Sprite = new Sprite();
+			className = getQualifiedClassName(sprite);
+			sprite.name = name;
+			var obj:Object = {"s":sprite};
+			assertThat(Logger.log(obj), containsString("{\"s\":" + name + "<" + className + ">}<Object>"));
+		}
+
+		[Test(description="ログ確認のテスト(さらに入れ子なオブジェクト)")]
+		public function loggerLogObjectInObjectSpriteTest():void {
+			var name:String = "sprite test";
+			var sprite:Sprite = new Sprite();
+			className = getQualifiedClassName(sprite);
+			sprite.name = name;
+			var obj:Object = {"s":sprite};
+			var o:Object = {"obj":obj};
+			assertThat(Logger.log(o), containsString("{\"obj\":{\"s\":" + name + "<" + className + ">}<Object>}<Object>"));
+		}
+
+		[Test(description="ログ確認のテスト(入れ子なオブジェクト)")]
+		public function loggerLogArraySpriteTest():void {
+			var name:String = "sprite test";
+			var sprite:Sprite = new Sprite();
+			className = getQualifiedClassName(sprite);
+			sprite.name = name;
+			var array:Array = [sprite];
+			assertThat(Logger.log(array), containsString("[" + name + "<" + className + ">]<Array>"));
+		}
+
+		[Test(description="ログ確認のテスト(さらに入れ子なオブジェクト)")]
+		public function loggerLogArrayInArraySpriteTest():void {
+			var name:String = "sprite test";
+			var sprite:Sprite = new Sprite();
+			className = getQualifiedClassName(sprite);
+			sprite.name = name;
+			var array:Array = [sprite];
+			var a:Array = [array];
+			assertThat(Logger.log(a), containsString("[[" + name + "<" + className + ">]<Array>]<Array>"));
+		}
+
+		[Test(description="ログ確認のテスト(XML)")]
+		public function loggerLogXMLTest():void {
+			var xml:XML = <foo>hoge</foo>;
+			assertThat(Logger.log(xml), containsString("<foo>hoge</foo><XML>"));
+		}
+
+		[Test(description="ログ確認のテスト(XMLList)")]
+		public function loggerLogXMLListTest():void {
+			var xml:XML = <list><foo>hoge</foo><foo>fuga</foo></list>;
+			var xmlList:XMLList = xml.foo;
+			assertThat(Logger.log(xmlList), containsString("<foo>hoge</foo><foo>fuga</foo><XMLList>"));
 		}
 	}
 }
