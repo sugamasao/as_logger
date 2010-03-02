@@ -62,5 +62,5 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 == Copyright
 
 Author:: sugamasao <sugamasao@gmail.com>
-License:: お好きなように
+License:: MIT License
 
