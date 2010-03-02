@@ -56,7 +56,7 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 * IE6 ステータスバーに出力されます
 
 
-=== CHANGE LOG
+== CHANGE LOG
 * v1.4 XML の出力を修正
 
 == Copyright
