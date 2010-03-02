@@ -212,6 +212,9 @@ package com.github.sugamasao.as_logger {
 				if(obj.toString().match(/\[object /) || obj.hasOwnProperty("name")) { // [object hoge] か Sprite 系の場合
 					if(obj.hasOwnProperty("name")) {
 						resultMessage = obj.name;
+						if(obj.hasOwnProperty("id")) { // Flex の コンポーネント の場合を考慮.
+							resultMessage += "(id:" + parseObject(obj.id) + ")";
+						}
 						if(obj.hasOwnProperty("source")) { // Flex の Image 等の場合を考慮.
 							resultMessage += "(source:" + parseObject(obj.source) + ")";
 						}
