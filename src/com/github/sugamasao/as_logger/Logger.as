@@ -112,7 +112,7 @@ package com.github.sugamasao.as_logger {
 					argsInfo.push(parseObject(arg));
 				}
 			} catch(e:Error) {
-				argsInfo.push("{###parseObjectError###}")
+				argsInfo.push("{###parseObjectError["+ e.toString() +"]###}")
 			}
 			var dateInfo:String = createDateFormat(new Date);
 			
@@ -162,7 +162,7 @@ package com.github.sugamasao.as_logger {
 						debugInfo = debugInfo.match(/::(.+)/)[1];
 					}
 				} catch (e2:Error) {
-					debugInfo = "{###class or method get error###}"
+					debugInfo = "{###class or method get error["+ e.toString() +"]###}"
 				}
 			}
 	
