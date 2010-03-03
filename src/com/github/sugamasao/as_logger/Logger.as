@@ -159,7 +159,9 @@ package com.github.sugamasao.as_logger {
 				try {
 					debugInfo = targetLine.match( /at (.+)/)[1].replace("/", "#");
 					if(!isFullPackage) {
-						debugInfo = debugInfo.match(/::(.+)/)[1];
+						if(debugInfo.match(/::(.+)/)) {
+							debugInfo = debugInfo.match(/::(.+)/)[1];
+						}
 					}
 				} catch (e2:Error) {
 					debugInfo = "{###class or method get error["+ e.toString() +"]###}"
