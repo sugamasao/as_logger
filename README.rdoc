@@ -35,6 +35,9 @@ AS3製のログクラスです。
 == options
 
 === ログ出力の動作を変更することが可能です。
+出力ログのパッケージ名の出力方法について
+* Logger.isFullPackage = true  // Logger.log実行クラスをフルパッケージで表示
+* Logger.isFullPackage = false // Logger.log実行クラスをクラス名のみを出力（デフォルト）
 debug フラグが有効な場合のファイルパスの出力方法について
 * Logger.isFullPath = true  // ファイル名をフルパスで表示
 * Logger.isFullPath = false // ファイル名のみを出力（デフォルト）
@@ -57,6 +60,7 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 
 
 == CHANGE LOG
+* v1.5 パッケージ名の出力方法を変更できるようにした（デフォルトは省略）
 * v1.4 XML の出力を修正
 
 == Copyright

@@ -30,6 +30,7 @@ package test.com.github.sugamasao.as_logger
 		 */
 		[Before]
 		public function alsoRunBeforeEveryTest():void { 
+			Logger.isFullPackage = false; // default
 //			trace("before");
 		}
 
@@ -169,5 +170,18 @@ package test.com.github.sugamasao.as_logger
 			var xmlList:XMLList = xml.foo;
 			assertThat(Logger.log(xmlList), containsString("<foo>hoge</foo><foo>fuga</foo><XMLList>"));
 		}
+		
+		[Test(description="パッケージ名出力のテスト(デフォルトのフルパッケージ)")]
+		public function loggerLogFullPackageTest():void {
+			Logger.isFullPackage = true;
+			assertThat(Logger.log("sample"), containsString(" test.com.github.sugamasao.as_logger::LoggerBasicTest#loggerLogFullPackageTest()"));
+		}
+
+		[Test(description="パッケージ名出力のテスト(パッケージ名省略)")]
+		public function loggerLogShortPackageTest():void {
+			Logger.isFullPackage = false;
+			assertThat(Logger.log("sample"), containsString(" LoggerBasicTest#loggerLogShortPackageTest()"));
+		}
+
 	}
 }

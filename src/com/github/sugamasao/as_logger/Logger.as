@@ -66,6 +66,13 @@ package com.github.sugamasao.as_logger {
 		 * @default false (ファイル名のみ出力)
 		 */
 		public static var isFullPath:Boolean = false; // true でフルパス表示
+
+		/**
+		 * 出力パスフォーマット変更パラメータ.
+		 * 
+		 * @default false (パッケージ名省略)
+		 */
+		public static var isFullPackage:Boolean = false; // true でフルパッケージ表示
 	
 		/**
 		 *  このクラスのメソッドは static で提供しているので、 new する必要はありません.
@@ -140,12 +147,20 @@ package com.github.sugamasao.as_logger {
 					// ファイル名だけ
 					fileName = targetLine.match( /at .+\[.+[\/|\\](.*\..+)\:\d+\]/)[1];
 				}
+
 				methodName = targetLine.match( /at (.+)\[.+[\.|\\]as\:\d+\]/)[1].replace("/", "#");
+				if(!isFullPackage) {
+					methodName = targetLine.match( /::/)[1];
+				}
+
 				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
 				debugInfo  = fileName + ":" + lineNumber + "@" + methodName;
 			} catch (e:Error) {
 				try {
 					debugInfo = targetLine.match( /at (.+)/)[1].replace("/", "#");
+					if(!isFullPackage) {
+						debugInfo = debugInfo.match(/::(.+)/)[1];
+					}
 				} catch (e2:Error) {
 					debugInfo = "{###class or method get error###}"
 				}
