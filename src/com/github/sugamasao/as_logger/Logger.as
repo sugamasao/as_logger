@@ -150,7 +150,7 @@ package com.github.sugamasao.as_logger {
 
 				methodName = targetLine.match( /at (.+)\[.+[\.|\\]as\:\d+\]/)[1].replace("/", "#");
 				if(!isFullPackage) {
-					methodName = targetLine.match( /::/)[1];
+					methodName = targetLine.match(/::(.+)/)[1];
 				}
 
 				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
