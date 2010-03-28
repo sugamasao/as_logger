@@ -213,8 +213,10 @@ package com.github.sugamasao.as_logger {
 				}
 
 				methodName = targetLine.match( /at (.+)\[.+[\.|\\]as\:\d+\]/)[1].replace("/", "#");
-				if(!isFullPackage) {
-					methodName = targetLine.match(/::(.+)/)[1];
+
+				// フルパスを省略する場合は、パッケージの区切り文字がある場合のみ
+				if(!isFullPackage && (methodName.indexOf("::") > -1)) {
+					methodName = methodName.match(/::(.+)/)[1];
 				}
 
 				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
@@ -222,7 +224,7 @@ package com.github.sugamasao.as_logger {
 			} catch (e:Error) {
 				try {
 					debugInfo = targetLine.match( /at (.+)/)[1].replace("/", "#");
-					if(!isFullPackage) {
+					if(!isFullPackage && (debugInfo.indexOf("::") > -1)) {
 						if(debugInfo.match(/::(.+)/)) {
 							debugInfo = debugInfo.match(/::(.+)/)[1];
 						}
