@@ -73,6 +73,12 @@ package com.github.sugamasao.as_logger {
 		 * @default false (パッケージ名省略)
 		 */
 		public static var isFullPackage:Boolean = false; // true でフルパッケージ表示
+		
+		/**
+		 * ppメソッド用デフォルト出力変数
+		 *
+		 */
+		private static var defaultFormat:Array = ["x", "y", "length", "width", "height", "id", "name", "parent"];
 	
 		/**
 		 *  このクラスのメソッドは static で提供しているので、 new する必要はありません.
@@ -124,6 +130,64 @@ package com.github.sugamasao.as_logger {
 			return message;
 	    }
 	
+		/**
+		 * 引渡されたオブジェクトを人に見やすい形で出力します.
+		 * 
+		 * 第二引数では出力したいプロパティを文字列の配列として渡すと
+		 * そのプロパティを出力します。
+		 *
+		 * @param pp で出力したい変数
+		 * @param 出力用プロパティを指定する（文字列の配列）
+		 * @return 整形された文字列
+		 */
+		public static function pp(obj:*, format:Array = null):String {
+			var result:Array = [];
+			var propList:Array = format == null ? defaultFormat : format;
+			
+			// 安全に文字列表現にする
+			var to_s:Function = function(str:*):String {
+				if(str == null) {
+					return "`null`";
+				} else {
+					return str.toString();
+				}
+			}
+
+			// name を取得するときは id の要素を優先する
+			var to_name:Function = function(parent:*):String {
+				if(parent == null) return "`null`";
+
+				var nameList:Array = ["id", "name"];
+				for each(var nameStr:String in nameList) {
+					if(parent.hasOwnProperty(nameStr)) {
+						return parent[nameStr];
+					}
+				}
+				return "";
+			}
+
+			result.push("className => " + getQualifiedClassName(obj));
+
+			for each(var prop:String in propList) {
+				if(obj.hasOwnProperty(prop)) {
+					if(prop == "length") {
+						var array:Array = [];
+						for each(var a:* in obj) {
+							array.push(to_s(a));
+						}
+						result.push("\tinspect=>[" + array.join(",") + "]");
+					}
+					
+					if(prop == "parent") {
+						result.push("\t" + prop + "=>" + to_name(obj[prop]) + "(ClassName:" + getQualifiedClassName(obj[prop]) + ")");
+					} else {
+						result.push("\t" + prop + "=>" + to_s(obj[prop]));
+					}
+				}
+			}
+			return result.join("\n");
+		}
+		
 		/**
 		 * エラーオブジェクトからファイル名等を取得する.
 		 *

@@ -8,5 +8,7 @@ package test {
 	public class TestSuiteAll {
 		public var t1:LoggerBasicTest;
 		public var t2:LoggerFlexTest;
+		public var t3:LoggerPPTest;
+
 	}
 }

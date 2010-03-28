@@ -8,6 +8,7 @@
 	<property name="FLEX_HOME" value="/opt/flex/sdk"/>
 	<property name="PMD_VER" value="1.0.RC4"/>
 	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-${PMD_VER}"/>
+	<property name="FLEXUNIT_HOME" value="/opt/flex/flexunit}"/>
 
 	<!-- プロジェクトのベースディレクトリ定義 -->
 	<dirname property="XML_DIR" file="${ant.file}"/>
