@@ -135,9 +135,11 @@ package com.github.sugamasao.as_logger {
 		 * 
 		 * 第二引数では出力したいプロパティを文字列の配列として渡すと
 		 * そのプロパティを出力します。
+		 * デフォルトでは以下のプロパティを（持っていれば）出力します。
+		 * ["x", "y", "length", "width", "height", "id", "name", "parent"]
 		 *
 		 * @param pp で出力したい変数
-		 * @param 出力用プロパティを指定する（文字列の配列）
+		 * @param 出力用プロパティを指定する（文字列のArray） 上記とは別の要素を出力したい場合は指定してください
 		 * @return 整形された文字列
 		 */
 		public static function pp(obj:*, format:Array = null):String {
@@ -185,6 +187,10 @@ package com.github.sugamasao.as_logger {
 					}
 				}
 			}
+			
+			// 整形したテキストを出力します
+			writeLog(writeTarget, result.join("\n"));
+			
 			return result.join("\n");
 		}
 		

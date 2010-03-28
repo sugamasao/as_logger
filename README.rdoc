@@ -32,6 +32,16 @@ AS3製のログクラスです。
   [2010-2-10T0:33:42] LoggerDrive#initialize() {"fuga":1<int>,"hoge":root1<LoggerDrive>}<Object>
   [2010-2-10T0:33:42] LoggerDrive#initialize() "MovieClip",instance1<flash.display::MovieClip>
 
+=== [BETA]pp method
+
+  Logger.log([1, 2]);
+
+out puts.
+
+  className => Array
+    inspect=>[1,2]
+    length=>2
+
 == options
 
 === ログ出力の動作を変更することが可能です。
@@ -60,6 +70,7 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 
 
 == CHANGE LOG
+* v1.6 fixed issue #12, #13, and beta pp method.
 * v1.5 パッケージ名の出力方法を変更できるようにした（デフォルトは省略）
 * v1.4 XML の出力を修正
 
