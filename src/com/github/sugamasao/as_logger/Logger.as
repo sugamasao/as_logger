@@ -202,6 +202,12 @@ package com.github.sugamasao.as_logger {
 			var methodName:String = "";
 			var lineNumber:String = "";
 			// ref.http://d.hatena.ne.jp/terracken/20080409/1207699049
+
+			// 非デバッグ版 FlashPlayer だと stackTrace が null
+			if(stackTrace == null) {
+				return "{### this player is not debug player ###}"
+			}
+
 			try {
 				targetLine = stackTrace.split("\n")[2];
 				if(isFullPath) {
