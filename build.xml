@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexAnt" default="build" basedir="./">
+	<description>
+		Logger クラスの動作確認用のタスクです
+	</description>
+
+	<!-- 環境によって変更されるパスの設定 -->
+	<property name="FLEX_HOME" value="/opt/flex/sdk"/>
+	<property name="PMD_VER" value="1.1"/>
+	<property name="PMD_HOME" value="/opt/flex/flex-pmd"/>
+	<property name="FLEXUNIT_HOME" value="/opt/flex/flexunit"/>
+
+	<!-- プロジェクトのベースディレクトリ定義 -->
+	<dirname property="XML_DIR" file="${ant.file}"/>
+	<property name="APP_ROOT" value="${XML_DIR}"/>
+	<property name="APP_SRC" value="${APP_ROOT}/src"/>
+	
+	<!-- 各コマンドのパス設定 -->
+	<property name="ASDOC_EXE" value="${FLEX_HOME}/bin/asdoc"/>
+
+	<!-- 出力先ディレクトリの設定  -->
+	<property name="BIN_OUTPUT" value="${APP_ROOT}/bin"/>
+	<property name="ASDOC_OUTPUT" value="${APP_ROOT}/asdoc"/>
+	<property name="PMD_OUTPUT" value="${APP_ROOT}/pmd"/>
+
+	<!-- アプリケーションの名前 -->
+	<property name="APP_NAME" value="LoggerDrive"/>
+
+	<!-- flex用Antタスクを読み込む -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+
+	<!-- FlexPMD タスクの定義 -->
+	<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" >
+		<classpath>
+			<pathelement location="${PMD_HOME}/as3-parser-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/as3-parser-api-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/as3-plugin-utils-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/commons-lang-2.4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ant-task-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-core-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-files-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-command-line-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-api-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/plexus-utils-1.0.2.jar"/>
+			<pathelement location="${PMD_HOME}/pmd-4.2.2.jar"/>
+		</classpath>
+	</taskdef>
+
+	<!-- 全部入り動作  -->
+	<target name="all" depends="clean,build,document,pmd" description="full build of project"/>
+
+	<!-- 全部入り動作(debug)  -->
+	<target name="debug-all" depends="clean,debug-build,document,pmd" description="full build of project"/>
+
+	<!-- mxmlcの実行 -->
+	<target name="build">
+		<mkdir dir="${BIN_OUTPUT}" />
+		<mxmlc file="${APP_SRC}/${APP_NAME}.as" output="${BIN_OUTPUT}/${APP_NAME}.swf">
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+		</mxmlc>
+	</target>
+
+	<!-- mxmlcの実行(debug) -->
+	<target name="debug-build">
+		<mkdir dir="${BIN_OUTPUT}" />
+		<mxmlc file="${APP_SRC}/${APP_NAME}.as" output="${BIN_OUTPUT}/${APP_NAME}.swf">
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+			<debug>true</debug><!-- デバッグ用ビルド -->
+			<incremental/><!-- キャッシュ入りビルドを有効に  -->
+		</mxmlc>
+	</target>
+
+	<!-- cleanの実行 -->
+	<target name="clean">
+		<delete file="${BIN_OUTPUT}/${APP_NAME}.swf" />
+		<delete dir="${ASDOC_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
+		<delete dir="${PMD_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
+	</target>
+
+	<!-- asdocの実行 -->
+	<target name="document">
+		<mkdir dir="${ASDOC_OUTPUT}" />
+		<exec executable="${ASDOC_EXE}" failOnError="false">
+			<arg line='-source-path ${APP_SRC} ${FLEX_HOME}/frameworks/'/>
+			<arg line='-doc-sources ${APP_SRC}/com/github/sugamasao/as_logger/'/>
+			<arg line='-window-title "${APP_NAME}"'/>
+			<arg line='-output ${ASDOC_OUTPUT}'/>
+			<arg line='-compiler.define CONFIG::DEBUG false'/>
+		</exec>
+	</target>
+
+	<!-- flex-pmd -->
+	<target name="pmd">
+		<mkdir dir="${PMD_OUTPUT}" />
+		<flexPmd
+			sourceDirectory="${APP_SRC}"
+			outputDirectory="${PMD_OUTPUT}" />
+	</target>
+
+</project>
