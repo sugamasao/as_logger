@@ -5,6 +5,7 @@ package test.com.github.sugamasao.as_logger
 	import org.hamcrest.core.*;
 	import org.hamcrest.text.*;
 	import com.github.sugamasao.as_logger.Logger;
+	import org.fluint.uiImpersonation.UIImpersonator;
 
 	import flash.display.Sprite;
 	import flash.events.*;
@@ -12,6 +13,7 @@ package test.com.github.sugamasao.as_logger
 	import flash.net.URLLoaderDataFormat;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
+	import mx.core.*;
 	import mx.collections.*;
 	import mx.controls.*;
 
@@ -38,7 +40,7 @@ package test.com.github.sugamasao.as_logger
 		 */
 		[After]
 		public function runAfterEveryTest():void {
-			className = null; 
+			className = null;
 		}
 
 		/******************************************************
@@ -50,6 +52,17 @@ package test.com.github.sugamasao.as_logger
 		[Test(expected="Error", description="new するとエラーになるのを確認"), ]
 		public function loggerNewTest():void {
 			new Logger();
+		}
+
+		[Test(description="Stage test(bug fix issue.14)"), ]
+		public function loggerStageTest():void {
+			var sp:Sprite = new Sprite();
+			var comp:UIComponent = new UIComponent();
+			comp.addChild(sp);
+			UIImpersonator.addChild(comp)
+			className = getQualifiedClassName(sp.stage);
+			trace("hogehogeho", sp.stage, className)
+			assertThat(Logger.log(sp.stage), containsString("StageObject<" + className + ">"));
 		}
 
 		[Test(description="VERSION test(not empty)"), ]

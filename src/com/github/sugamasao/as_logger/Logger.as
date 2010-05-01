@@ -308,7 +308,11 @@ package com.github.sugamasao.as_logger {
 			} else {
 				if(obj.toString().match(/\[object /) || obj.hasOwnProperty("name")) { // [object hoge] か Sprite 系の場合
 					if(obj.hasOwnProperty("name")) {
-						resultMessage = obj.name;
+						if(className === "flash.display::Stage") {
+							resultMessage = "StageObject";
+						} else {
+							resultMessage = String(obj.name);
+						}
 						if(obj.hasOwnProperty("id")) { // Flex の コンポーネント の場合を考慮.
 							resultMessage += "(id:" + parseObject(obj.id) + ")";
 						}
