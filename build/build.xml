@@ -6,9 +6,9 @@
 
 	<!-- 環境によって変更されるパスの設定 -->
 	<property name="FLEX_HOME" value="/opt/flex/sdk"/>
-	<property name="PMD_VER" value="1.0.RC4"/>
-	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-${PMD_VER}"/>
-	<property name="FLEXUNIT_HOME" value="/opt/flex/flexunit}"/>
+	<property name="PMD_VER" value="1.1"/>
+	<property name="PMD_HOME" value="/opt/flex/flex-pmd"/>
+	<property name="FLEXUNIT_HOME" value="/opt/flex/flexunit"/>
 
 	<!-- プロジェクトのベースディレクトリ定義 -->
 	<dirname property="XML_DIR" file="${ant.file}"/>
@@ -85,7 +85,7 @@
 		<mkdir dir="${ASDOC_OUTPUT}" />
 		<exec executable="${ASDOC_EXE}" failOnError="false">
 			<arg line='-source-path ${APP_SRC} ${FLEX_HOME}/frameworks/'/>
-			<arg line='-doc-sources ${APP_SRC}'/>
+			<arg line='-doc-sources ${APP_SRC}/com/github/sugamasao/as_logger/'/>
 			<arg line='-window-title "${APP_NAME}"'/>
 			<arg line='-output ${ASDOC_OUTPUT}'/>
 			<arg line='-compiler.define CONFIG::DEBUG false'/>

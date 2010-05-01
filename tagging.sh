@@ -16,6 +16,15 @@ GIT_REMOTE_NAME=as_logger
 VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/as_logger/Version.as
 
 #######################
+# check version file.
+#######################
+if [ -f ${VERSION_FILE} ]; then
+	echo "fetch version file.[${VERSION_FILE}]";
+else
+	echo "not found version file.[${VERSION_FILE}]";
+fi;
+
+#######################
 # get version
 #######################
 VERSION=`${GREP} VERSION ${VERSION_FILE} | ${AWK} -F\" '{print $2}'`
@@ -23,7 +32,7 @@ VERSION=`${GREP} VERSION ${VERSION_FILE} | ${AWK} -F\" '{print $2}'`
 #######################
 # chekc
 #######################
-INPUT_MESSAGE="tagging version [${VERSION}] ok?[Y/n]"
+INPUT_MESSAGE="local name ${GIT_REMOTE_NAME} tagging version [${VERSION}] ok?[Y/n]"
 
 # OK Cancel のアレ
 while [ "${READ_KEY}" != "Y" ] && [ "${READ_KEY}" != "n" ]; do
