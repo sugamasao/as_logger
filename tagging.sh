@@ -13,7 +13,7 @@ AWK=/usr/bin/awk
 GREP=/usr/bin/grep
 GIT=/opt/local/bin/git
 GIT_REMOTE_NAME=as_logger
-VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/as_logger/Version.as
+VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/version/Version.as
 
 #######################
 # check version file.
@@ -22,6 +22,7 @@ if [ -f ${VERSION_FILE} ]; then
 	echo "fetch version file.[${VERSION_FILE}]";
 else
 	echo "not found version file.[${VERSION_FILE}]";
+	exit 1;
 fi;
 
 #######################
