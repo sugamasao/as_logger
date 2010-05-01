@@ -31,7 +31,6 @@ package test.com.github.sugamasao.as_logger
 		[Before]
 		public function alsoRunBeforeEveryTest():void { 
 			Logger.isFullPackage = false; // default
-//			trace("before");
 		}
 
 		/*
@@ -39,7 +38,6 @@ package test.com.github.sugamasao.as_logger
 		 */
 		[After]
 		public function runAfterEveryTest():void {
-//			trace("after");
 			className = null; 
 		}
 
@@ -52,6 +50,11 @@ package test.com.github.sugamasao.as_logger
 		[Test(expected="Error", description="new するとエラーになるのを確認"), ]
 		public function loggerNewTest():void {
 			new Logger();
+		}
+
+		[Test(description="VERSION test(not empty)"), ]
+		public function loggerVersionTest():void {
+			Assert.assertFalse(Logger.VERSION == "");
 		}
 
 		[Test(description="ログ確認のテスト(Int)"), ]

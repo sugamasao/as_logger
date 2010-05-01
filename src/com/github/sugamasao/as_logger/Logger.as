@@ -22,7 +22,7 @@ package com.github.sugamasao.as_logger {
 	public class Logger {
 		
 		// include Version file. "public const VERSION"
-		include "./Version.as";
+		include "./../version/Version.as";
 		
 		/**
 		 * writeTarget 設定用定数.
@@ -135,8 +135,10 @@ package com.github.sugamasao.as_logger {
 		 * 
 		 * 第二引数では出力したいプロパティを文字列の配列として渡すと
 		 * そのプロパティを出力します。
-		 * デフォルトでは以下のプロパティを（持っていれば）出力します。
-		 * ["x", "y", "length", "width", "height", "id", "name", "parent"]
+		 * デフォルトでは以下のプロパティを（持っていれば）出力します.
+		 * <pre>
+		 *   ["x", "y", "length", "width", "height", "id", "name", "parent"]
+		 * </pre>
 		 *
 		 * @param pp で出力したい変数
 		 * @param 出力用プロパティを指定する（文字列のArray） 上記とは別の要素を出力したい場合は指定してください

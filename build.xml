@@ -86,9 +86,8 @@
 		<exec executable="${ASDOC_EXE}" failOnError="false">
 			<arg line='-source-path ${APP_SRC} ${FLEX_HOME}/frameworks/'/>
 			<arg line='-doc-sources ${APP_SRC}/com/github/sugamasao/as_logger/'/>
-			<arg line='-window-title "${APP_NAME}"'/>
+			<arg line='-window-title "Logger"'/>
 			<arg line='-output ${ASDOC_OUTPUT}'/>
-			<arg line='-compiler.define CONFIG::DEBUG false'/>
 		</exec>
 	</target>
 
