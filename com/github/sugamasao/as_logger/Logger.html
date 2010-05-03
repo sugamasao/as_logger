@@ -4,13 +4,13 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="Logger,com.github.sugamasao.as_logger.Logger,WRITE_TARGET_CONSOLE_ONLY,WRITE_TARGET_FULL,WRITE_TARGET_NOTHING,WRITE_TARGET_TRACE_ONLY,isFullPath,writeTarget,log" name="keywords">
+<meta content="Logger,com.github.sugamasao.as_logger.Logger,WRITE_TARGET_CONSOLE_ONLY,WRITE_TARGET_FULL,WRITE_TARGET_NOTHING,WRITE_TARGET_TRACE_ONLY,isFullPackage,isFullPath,writeTarget,log,pp" name="keywords">
 <title>com.github.sugamasao.as_logger.Logger</title>
 </head>
 <body>
 <script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
 <!--
-				asdocTitle = 'Logger - LoggerDrive';
+				asdocTitle = 'Logger - Logger';
 				var baseRef = '../../../../';
 				window.onload = configPage;
 			--></script>
@@ -52,6 +52,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isFullPackage">isFullPackage</a> : Boolean = false<div class="summaryTableDescription">[static]
+   出力パスフォーマット変更パラメータ.</div>
+</td><td class="summaryTableOwnerCol">Logger</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isFullPath">isFullPath</a> : Boolean = false<div class="summaryTableDescription">[static]
    出力ファイル名フォーマット変更パラメータ.</div>
 </td><td class="summaryTableOwnerCol">Logger</td>
@@ -81,9 +86,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#log()">log</a>(... args):void</div>
+<a class="signatureLink" href="#log()">log</a>(... args):String</div>
 <div class="summaryTableDescription">[static]
     ログ出力メソッドです.</div>
+</td><td class="summaryTableOwnerCol">Logger</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#pp()">pp</a>(obj:*, format:Array = null):String</div>
+<div class="summaryTableDescription">[static]
+   引渡されたオブジェクトを人に見やすい形で出力します.</div>
 </td><td class="summaryTableOwnerCol">Logger</td>
 </tr>
 </table>
@@ -124,10 +137,22 @@ showHideInherited();
 <div class="MainContent">
 <a name="propertyDetail"></a>
 <div class="detailSectionHeader">Property detail</div>
+<a name="isFullPackage"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">isFullPackage</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var isFullPackage:Boolean = false</code><p>
+   出力パスフォーマット変更パラメータ.
+   
+   </p><p>The default value is <code>false (パッケージ名省略)</code>.</p>
+</div>
 <a name="isFullPath"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">isFullPath</td><td class="detailHeaderType">property</td>
+<td class="detailHeaderName">isFullPath</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
@@ -177,7 +202,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function log(... args):void</code><p>
+<code>public static function log(... args):String</code><p>
     ログ出力メソッドです.
    
    </p><span class="label">Parameters</span>
@@ -185,6 +210,13 @@ showHideInherited();
 <tr>
 <td width="20px"></td><td><code>... <span class="label">args</span></code> &mdash; 出力内容(複数可)
    </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
 </tr>
 </table>
 <br>
@@ -198,6 +230,45 @@ showHideInherited();
    
    <pre>
    [yyyy-mm-ddThh:mm:ss] ファイルパス:行数<p></p>
+</div>
+<a name="pp()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pp</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function pp(obj:*, format:Array = null):String</code><p>
+   引渡されたオブジェクトを人に見やすい形で出力します.
+   
+   第二引数では出力したいプロパティを文字列の配列として渡すと
+   そのプロパティを出力します。
+   デフォルトでは以下のプロパティを（持っていれば）出力します.
+   <pre>
+     ["x", "y", "length", "width", "height", "id", "name", "parent"]
+   </pre>
+      </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">obj</span>:*</code> &mdash; で出力したい変数
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">format</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; 上記とは別の要素を出力したい場合は指定してください
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; 整形された文字列
+   </td>
+</tr>
+</table>
 </div>
 <a name="constantDetail"></a>
 <div class="detailSectionHeader">Constant detail</div>
