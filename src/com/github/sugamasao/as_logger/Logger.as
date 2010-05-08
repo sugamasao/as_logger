@@ -4,6 +4,7 @@
  */
 package com.github.sugamasao.as_logger {
 
+	import flash.display.*;
 	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
@@ -66,6 +67,8 @@ package com.github.sugamasao.as_logger {
 		 * @default false (ファイル名のみ出力)
 		 */
 		public static var isFullPath:Boolean = false; // true でフルパス表示
+
+		private static var disp:DispFormatClass = null;
 
 		/**
 		 * 出力パスフォーマット変更パラメータ.
@@ -147,11 +150,14 @@ package com.github.sugamasao.as_logger {
 		public static function pp(obj:*, format:Array = null):String {
 			var result:Array = [];
 			var propList:Array = format == null ? defaultFormat : format;
+			if(!disp) {
+				disp = new DispFormatClass();
+			}
 			
 			// 安全に文字列表現にする
 			var to_s:Function = function(str:*):String {
 				if(str == null) {
-					return "`null`";
+					return disp.NULL;
 				} else {
 					return str.toString();
 				}
@@ -159,7 +165,7 @@ package com.github.sugamasao.as_logger {
 
 			// name を取得するときは id の要素を優先する
 			var to_name:Function = function(parent:*):String {
-				if(parent == null) return "`null`";
+				if(parent == null) return disp.NULL;
 
 				var nameList:Array = ["id", "name"];
 				for each(var nameStr:String in nameList) {
@@ -179,7 +185,7 @@ package com.github.sugamasao.as_logger {
 						for each(var a:* in obj) {
 							array.push(to_s(a));
 						}
-						result.push("\tinspect=>[" + array.join(",") + "]");
+						result.push("\tinspect=>" + disp.ARRAY_START + array.join(disp.ARRAY_SEP) + disp.ARRAY_START);
 					}
 					
 					if(prop == "parent") {
@@ -278,23 +284,26 @@ package com.github.sugamasao.as_logger {
 			var result:Array = [];
 			var resultMessage:String = "";
 			var isClassNameShow:Boolean = true;
+			if(!disp) {
+				disp = new DispFormatClass();
+			}
 			
 			if(obj is String) {
-				resultMessage = '"'+obj+'"';
+				resultMessage = disp.STRING_START + obj + disp.STRING_END;
 				isClassNameShow = false;
 			} else if(obj == null) {
-				resultMessage = "`null`";
+				resultMessage = disp.NULL;
 				isClassNameShow = false;
 			} else if(className === "Object" || obj is Dictionary) {
 				for (var key:* in obj) {
-					result.push(parseObject(key) + ":" + parseObject(obj[key]));
+					result.push(parseObject(key) + disp.KEY_VALUE_SEP + parseObject(obj[key]));
 				}
-				resultMessage = "{" + result.join(",") + "}";
+				resultMessage = disp.OBJECT_START + result.join(disp.OBJECT_SEP) + disp.OBJECT_END;
 			} else if(obj is Array) {
 				for each(var a:* in obj) {
 					result.push(parseObject(a));
 				}
-				resultMessage = "[" + result.join(",") + "]";
+				resultMessage = disp.ARRAY_START + result.join(disp.ARRAY_SEP) + disp.ARRAY_END;
 			} else if(obj is URLLoader) {
 				if(obj.dataFormat == URLLoaderDataFormat.TEXT || obj.dataFormat == URLLoaderDataFormat.VARIABLES) {
 					resultMessage = "[dataFormat=" + obj.dataFormat + " data=" + parseObject(obj.data) + "]";
@@ -305,34 +314,28 @@ package com.github.sugamasao.as_logger {
 					resultMessage = "[errorID=" + obj.errorID + " message=" + obj.message + " name=" + obj.name + "]";
 			} else if(obj is XML) {
 					resultMessage = obj.toXMLString();
-			} else {
-				if(obj.toString().match(/\[object /) || obj.hasOwnProperty("name")) { // [object hoge] か Sprite 系の場合
-					if(obj.hasOwnProperty("name")) {
-						if(className === "flash.display::Stage") {
-							resultMessage = "StageObject";
-						} else {
-							resultMessage = String(obj.name);
-						}
-						if(obj.hasOwnProperty("id")) { // Flex の コンポーネント の場合を考慮.
-							resultMessage += "(id:" + parseObject(obj.id) + ")";
-						}
-						if(obj.hasOwnProperty("source")) { // Flex の Image 等の場合を考慮.
-							resultMessage += "(source:" + parseObject(obj.source) + ")";
-						}
-					}
+			} else if(obj is Stage) {
+					resultMessage = disp.STAGE_OBJECT;
+			} else if(obj is DisplayObject) {
+				resultMessage = String(obj.name);
+				if(obj.hasOwnProperty("id")) { // Flex の コンポーネント の場合を考慮.
+					resultMessage += disp.FLEX_ID_START + parseObject(obj.id) + disp.FLEX_ID_END;
 				}
-				
+				if(obj.hasOwnProperty("source")) { // Flex の Image 等の場合を考慮.
+					resultMessage += disp.FLEX_SOURCE_START + parseObject(obj.source) + disp.FLEX_SOURCE_END;
+				}
+			} else {
 				// イテレータブルなオブジェクトだったら再帰的に処理をする
 				if(obj.hasOwnProperty("length")) { // 
 					var listMessage:Array = [];
 					for each(var list:* in obj) {
-						listMessage.push(parseObject(list))
+						listMessage.push(parseObject(list));
 					}
-					resultMessage += "[" + listMessage.join(",")  + "]"
-					resultMessage += "(length:" + obj.length.toString() + ")";
+					resultMessage += disp.ARRAY_START + listMessage.join(disp.ARRAY_SEP)  + disp.ARRAY_END;
+					resultMessage += disp.ARRAY_LENGTH_START + String(obj.length) + disp.ARRAY_LENGTH_END;
 				}
 				
-				if(resultMessage == "") {
+				if(resultMessage === "") {
 					resultMessage = obj.toString();
 				}
 			}
@@ -340,7 +343,7 @@ package com.github.sugamasao.as_logger {
 			// 改行を除去
 			resultMessage = resultMessage.replace(/\r?\n|\r/g, "");
 			
-			return isClassNameShow ? (resultMessage + "<" + className + ">") : resultMessage;
+			return isClassNameShow ? (resultMessage + disp.CLASS_NAME_START + className + disp.CLASS_NAME_END) : resultMessage;
 		}
 	
 		/**
@@ -394,4 +397,27 @@ package com.github.sugamasao.as_logger {
 			}
 		}
 	}
+}
+
+class DispFormatClass {
+	public const NULL:String = "`null`";
+	public const STAGE_OBJECT:String = "StageObject";
+	public const CLASS_NAME_START:String = "<";
+	public const CLASS_NAME_END:String = ">";
+	public const STRING_START:String = '"';
+	public const STRING_END:String = '"';
+	public const ARRAY_START:String = "[";
+	public const ARRAY_END:String = "]";
+	public const ARRAY_SEP:String = ",";
+	public const ARRAY_LENGTH_START:String = "(length:";
+	public const ARRAY_LENGTH_END:String = ")";
+	public const OBJECT_START:String = "{";
+	public const OBJECT_END:String = "}";
+	public const OBJECT_SEP:String = ",";
+	public const KEY_VALUE_SEP:String = ":";
+
+	public const FLEX_ID_START:String = "(id:";
+	public const FLEX_ID_END:String = ")";
+	public const FLEX_SOURCE_START:String = "(source:";
+	public const FLEX_SOURCE_END:String = ")";
 }
