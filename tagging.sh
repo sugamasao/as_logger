@@ -13,7 +13,7 @@ AWK=/usr/bin/awk
 GREP=/usr/bin/grep
 GIT=/opt/local/bin/git
 GIT_REMOTE_NAME=as_logger
-VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/version/Version.as
+VERSION_FILE=${MY_DIR}/src/com/github/sugamasao/version/LoggerVersion.as
 
 #######################
 # check version file.
