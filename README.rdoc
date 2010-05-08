@@ -70,7 +70,9 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 
 
 == CHANGE LOG
-* v1.7 issue 14 fixed
+* v1.9.1 issue close #9(toStringの実装)
+* v1.9 ロジック上にべた書きしてあるリテラルをリファクタリング
+* v1.8 issue 14 fixed
 * v1.7 pp メソッドについて文言などを修正
 * v1.6 fixed issue #12, #13, and beta pp method.
 * v1.5 パッケージ名の出力方法を変更できるようにした（デフォルトは省略）

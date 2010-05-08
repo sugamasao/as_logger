@@ -32,7 +32,10 @@ package test.com.github.sugamasao.as_logger
 		 */
 		[Before]
 		public function alsoRunBeforeEveryTest():void { 
-			Logger.isFullPackage = false; // default
+			// set default
+			Logger.isFullPath = false;
+			Logger.isFullPackage = false;
+			Logger.writeTarget = Logger.WRITE_TARGET_FULL;
 		}
 
 		/*
@@ -61,7 +64,6 @@ package test.com.github.sugamasao.as_logger
 			comp.addChild(sp);
 			UIImpersonator.addChild(comp)
 			className = getQualifiedClassName(sp.stage);
-			trace("hogehogeho", sp.stage, className)
 			assertThat(Logger.log(sp.stage), containsString("StageObject<" + className + ">"));
 		}
 
@@ -199,5 +201,60 @@ package test.com.github.sugamasao.as_logger
 			assertThat(Logger.log("sample"), containsString(" LoggerBasicTest#loggerLogShortPackageTest()"));
 		}
 
+		[Test(description="toStringのテスト")]
+		public function loggerToString1Test():void {
+			Logger.isFullPath = false;
+			Logger.isFullPackage = false;
+			Logger.writeTarget = Logger.WRITE_TARGET_FULL;
+			var a:Array = [];
+			a.push("Logger");
+			a.push("version=" + Logger.VERSION);
+			a.push("isFullPath=false");
+			a.push("isFullPackage=false");
+			a.push("writeTarget=WRITE_TARGET_FULL");
+			assertThat(Logger.toString(), a.join(" "));
+		}
+
+		[Test(description="toStringのテスト")]
+		public function loggerToString2Test():void {
+			Logger.isFullPath = true;
+			Logger.isFullPackage = true;
+			Logger.writeTarget = Logger.WRITE_TARGET_TRACE_ONLY;
+			var a:Array = [];
+			a.push("Logger");
+			a.push("version=" + Logger.VERSION);
+			a.push("isFullPath=true");
+			a.push("isFullPackage=true");
+			a.push("writeTarget=WRITE_TARGET_TRACE_ONLY");
+			assertThat(Logger.toString(), a.join(" "));
+		}
+
+		[Test(description="toStringのテスト")]
+		public function loggerToString3Test():void {
+			Logger.isFullPath = true;
+			Logger.isFullPackage = true;
+			Logger.writeTarget = Logger.WRITE_TARGET_NOTHING;
+			var a:Array = [];
+			a.push("Logger");
+			a.push("version=" + Logger.VERSION);
+			a.push("isFullPath=true");
+			a.push("isFullPackage=true");
+			a.push("writeTarget=WRITE_TARGET_NOTHING");
+			assertThat(Logger.toString(), a.join(" "));
+		}
+
+		[Test(description="toStringのテスト")]
+		public function loggerToString4Test():void {
+			Logger.isFullPath = true;
+			Logger.isFullPackage = true;
+			Logger.writeTarget = 10;
+			var a:Array = [];
+			a.push("Logger");
+			a.push("version=" + Logger.VERSION);
+			a.push("isFullPath=true");
+			a.push("isFullPackage=true");
+			a.push("writeTarget=unknown:10");
+			assertThat(Logger.toString(), a.join(" "));
+		}
 	}
 }

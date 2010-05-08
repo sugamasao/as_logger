@@ -68,8 +68,6 @@ package com.github.sugamasao.as_logger {
 		 */
 		public static var isFullPath:Boolean = false; // true でフルパス表示
 
-		private static var disp:DispFormatClass = null;
-
 		/**
 		 * 出力パスフォーマット変更パラメータ.
 		 * 
@@ -77,6 +75,9 @@ package com.github.sugamasao.as_logger {
 		 */
 		public static var isFullPackage:Boolean = false; // true でフルパッケージ表示
 		
+
+		private static var disp:DispFormatClass = null;
+
 		/**
 		 * ppメソッド用デフォルト出力変数
 		 *
@@ -200,6 +201,39 @@ package com.github.sugamasao.as_logger {
 			writeLog(writeTarget, result.join("\n"));
 			
 			return result.join("\n");
+		}
+
+		/**
+		 * Logger クラスの文字列表現です
+		 *
+		 * @return 整形された文字列（file:行番号@メソッド名）
+		 */
+		public static function toString():String {
+			var array:Array  = [];
+			var name:String  = "";
+
+			array.push(getQualifiedClassName(Logger))
+			array.push("version=" + VERSION);
+			switch(writeTarget) {
+				case WRITE_TARGET_FULL:
+					name = "WRITE_TARGET_FULL";
+					break;
+				case WRITE_TARGET_TRACE_ONLY:
+					name = "WRITE_TARGET_TRACE_ONLY";
+					break;
+				case WRITE_TARGET_CONSOLE_ONLY:
+					name = "WRITE_TARGET_CONSOLE_ONLY";
+					break;
+				case WRITE_TARGET_NOTHING:
+					name = "WRITE_TARGET_NOTHING";
+					break;
+				default:
+					name = "unknown:" + writeTarget.toString();
+			}
+			array.push("writeTarget=" + name);
+			array.push("isFullPath=" + isFullPath);
+			array.push("isFullPackage=" + isFullPackage);
+			return array.join(" ");
 		}
 		
 		/**
