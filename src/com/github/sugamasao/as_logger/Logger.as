@@ -22,7 +22,7 @@ package com.github.sugamasao.as_logger {
 	 */
 	public class Logger {
 		
-		public static const VERSION:String  = "v1.9.1";
+		public static const VERSION:String  = "v1.9.2";
 		
 		/**
 		 * writeTarget 設定用定数.
