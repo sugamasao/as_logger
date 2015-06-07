@@ -71,7 +71,7 @@ Logger.isFullPath = false // ファイル名のみを出力（デフォルト）
 Logger.writeTarget = Logger.WRITE_TARGET_FULL         // すべての出力先に出力します(デフォルト)
 Logger.writeTarget = Logger.WRITE_TARGET_TRACE_ONLY   // trace にのみ出力します
 Logger.writeTarget = Logger.WRITE_TARGET_CONSOLE_ONLY // JSの console.log なければ window.status に出力します
-Logger.writeTarget = Logger.WRITE_TARGET_NOTTHING   // ログを出力しません。整形処理もおこないませんので、パフォーマンスへの影響は最小になります
+Logger.writeTarget = Logger.WRITE_TARGET_NOTHING      // ログを出力しません。整形処理もおこないませんので、パフォーマンスへの影響は最小になります
 ```
 
 ## Features/Problems
