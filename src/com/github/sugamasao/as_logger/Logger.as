@@ -22,8 +22,7 @@ package com.github.sugamasao.as_logger {
 	 */
 	public class Logger {
 		
-		// include Version file. "public const VERSION"
-		include "./../version/LoggerVersion.as";
+		public static const VERSION:String  = "v1.9.1";
 		
 		/**
 		 * writeTarget 設定用定数.
