@@ -68,8 +68,12 @@ debug フラグが有効な場合のファイルパスの出力方法につい�
 * IE7 の場合はセキュリティ設定を変更すれば、ステータスバーにログが出力されます。
 * IE6 ステータスバーに出力されます
 
+=== How To swc
+
+  $ compc -source-path ./src -include-sources ./src/com/github/sugamasao -optimize -output ./bin/as_logger.swc
 
 == CHANGE LOG
+* v1.9.2 swc対応
 * v1.9.1 issue close #9(toStringの実装)
 * v1.9 ロジック上にべた書きしてあるリテラルをリファクタリング
 * v1.8 issue 14 fixed
