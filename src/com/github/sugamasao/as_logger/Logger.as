@@ -264,15 +264,14 @@ package com.github.sugamasao.as_logger {
 					// ファイル名だけ
 					fileName = targetLine.match( /at .+\[.+[\/|\\](.*\..+)\:\d+\]/)[1];
 				}
-
-				methodName = targetLine.match( /at (.+)\[.+[\.|\\]as\:\d+\]/)[1].replace("/", "#");
+				methodName = targetLine.match( /at (.+)\[.+[\.|\\].*\..+\:\d+\]/)[1].replace("/", "#");
 
 				// フルパスを省略する場合は、パッケージの区切り文字がある場合のみ
 				if(!isFullPackage && (methodName.indexOf("::") > -1)) {
 					methodName = methodName.match(/::(.+)/)[1];
 				}
 
-				lineNumber = targetLine.match( /at .+\[.+[\.|\\]as\:(\d+)\]/)[1];
+				lineNumber = targetLine.match( /at .+\[.+[\.|\\].*\..+\:(\d+)\]/)[1];
 				debugInfo  = fileName + ":" + lineNumber + "@" + methodName;
 			} catch (e:Error) {
 				try {
