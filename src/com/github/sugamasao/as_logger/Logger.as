@@ -4,10 +4,13 @@
  */
 package com.github.sugamasao.as_logger {
 
-	import flash.display.*;
+	import flash.display.DisplayObject;
+	import flash.display.Stage;
 	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
+	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 
@@ -22,7 +25,7 @@ package com.github.sugamasao.as_logger {
 	 */
 	public class Logger {
 		
-		public static const VERSION:String  = "v1.9.2";
+		public static const VERSION:String  = "v1.9.3";
 		
 		/**
 		 * writeTarget 設定用定数.
@@ -58,7 +61,7 @@ package com.github.sugamasao.as_logger {
 		 * 
 		 * @default WRITE_TARGET_FULL (すべての出力先に出力する)
 		 */
-		public static var writeTarget:uint = WRITE_TARGET_FULL; // WRITE_TARGET_XXX を設定することでログ出力先を変更します
+		public static var writeTarget:uint = WRITE_TARGET_TRACE_ONLY; // WRITE_TARGET_XXX を設定することでログ出力先を変更します
 		
 		/**
 		 * 出力ファイル名フォーマット変更パラメータ.
@@ -257,21 +260,17 @@ package com.github.sugamasao.as_logger {
 
 			try {
 				targetLine = stackTrace.split("\n")[2];
-				if(isFullPath) {
-					// フルのファイルパス
-					fileName = targetLine.match( /at .+\[(.*\..+)\:\d+\]/)[1];
-				} else {
-					// ファイル名だけ
-					fileName = targetLine.match( /at .+\[.+[\/|\\](.*\..+)\:\d+\]/)[1];
+				var result:Array = targetLine.match(/at (.+)\[(.+\..+)\:(\d+)\]/);
+				methodName = result[1];
+				fileName = result[2];
+				lineNumber = result[3];
+				if(!isFullPath) { // ファイル名だけ
+					fileName = fileName.split("\/").pop();
 				}
-				methodName = targetLine.match( /at (.+)\[.+[\.|\\].*\..+\:\d+\]/)[1].replace("/", "#");
-
 				// フルパスを省略する場合は、パッケージの区切り文字がある場合のみ
 				if(!isFullPackage && (methodName.indexOf("::") > -1)) {
 					methodName = methodName.match(/::(.+)/)[1];
 				}
-
-				lineNumber = targetLine.match( /at .+\[.+[\.|\\].*\..+\:(\d+)\]/)[1];
 				debugInfo  = fileName + ":" + lineNumber + "@" + methodName;
 			} catch (e:Error) {
 				try {
@@ -336,6 +335,19 @@ package com.github.sugamasao.as_logger {
 					result.push(parseObject(a));
 				}
 				resultMessage = disp.ARRAY_START + result.join(disp.ARRAY_SEP) + disp.ARRAY_END;
+			} else if(obj is URLRequest) {
+				var obj_data:String = "";
+				if(obj.data is ByteArray) {
+					obj_data = String((obj.data as ByteArray).length) + " byte"
+				} else if (obj.data is Object) {
+					var obj_params:Array = [];
+					for (var k:String in obj.data) {
+						var v:Object = obj.data[k];
+						obj_params.push("param:" + k + "=" + v);
+					}
+					obj_data = obj_params.join(" ");
+				}
+				resultMessage = "[url=" + obj.url + " method=" + obj.method + " contentType=" + obj.contentType + " userAgent=" + obj.userAgent + " data=" + obj_data + "]";
 			} else if(obj is URLLoader) {
 				if(obj.dataFormat == URLLoaderDataFormat.TEXT || obj.dataFormat == URLLoaderDataFormat.VARIABLES) {
 					resultMessage = "[dataFormat=" + obj.dataFormat + " data=" + parseObject(obj.data) + "]";
