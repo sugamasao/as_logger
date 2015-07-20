@@ -2,7 +2,7 @@
 <project name="as_logger" default="build" basedir="./">
 	<property file="build.properties" />
 	<description>
-		Logger クラスの動作確認用のタスクです
+		source, document build tasks.
 	</description>
 
 	<!-- プロジェクトのベースディレクトリ定義 -->
