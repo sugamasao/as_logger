@@ -27,7 +27,6 @@
 		<mkdir dir="${BUILD_PATH}" />
 		<compc optimize="true" output="${BUILD_PATH}/${SWC_NAME}">
 			<source-path path-element="${APP_SRC}"/>
-			<source-path path-element="${FLEX_HOME}/frameworks"/>
 			<include-sources dir="${APP_SRC}/com/github/sugamasao" includes="*"/>
 		</compc>
 	</target>
