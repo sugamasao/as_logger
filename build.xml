@@ -23,30 +23,7 @@
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
 
 	<!-- 全部入り動作  -->
-	<target name="all" depends="clean,build,document" description="full build of project"/>
-
-	<!-- 全部入り動作(debug)  -->
-	<target name="debug-all" depends="clean,debug-build,document" description="full build of project"/>
-
-	<!-- mxmlcの実行 -->
-	<target name="build">
-		<mkdir dir="${BIN_OUTPUT}" />
-		<mxmlc file="${APP_SRC}/${APP_NAME}.as" output="${BIN_OUTPUT}/${APP_NAME}.swf">
-			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-			<source-path path-element="${FLEX_HOME}/frameworks"/>
-		</mxmlc>
-	</target>
-
-	<!-- mxmlcの実行(debug) -->
-	<target name="debug-build">
-		<mkdir dir="${BIN_OUTPUT}" />
-		<mxmlc file="${APP_SRC}/${APP_NAME}.as" output="${BIN_OUTPUT}/${APP_NAME}.swf">
-			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-			<source-path path-element="${FLEX_HOME}/frameworks"/>
-			<debug>true</debug><!-- デバッグ用ビルド -->
-			<incremental/><!-- キャッシュ入りビルドを有効に  -->
-		</mxmlc>
-	</target>
+	<target name="all" depends="clean,document" description="full build of project"/>
 
 	<!-- cleanの実行 -->
 	<target name="clean">
