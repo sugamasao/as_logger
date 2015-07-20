@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="as_logger" default="build" basedir="./">
+	<property file="build.properties" />
 	<description>
 		Logger クラスの動作確認用のタスクです
 	</description>
@@ -14,16 +15,24 @@
 
 	<!-- 出力先ディレクトリの設定  -->
 	<property name="BIN_OUTPUT" value="${APP_ROOT}/bin"/>
-	<property name="ASDOC_OUTPUT" value="${APP_ROOT}/asdoc"/>
 
 	<!-- アプリケーションの名前 -->
-	<property name="APP_NAME" value="LoggerDrive"/>
+	<property name="SWC_NAME" value="as_logger.swc"/>
 
 	<!-- flex用Antタスクを読み込む -->
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
 
 	<!-- 全部入り動作  -->
-	<target name="all" depends="clean,document" description="full build of project"/>
+	<target name="all" depends="clean,build,document" description="full build of project"/>
+
+	<target name="build">
+		<mkdir dir="${BUILD_PATH}" />
+		<compc optimize="true" output="${BUILD_PATH}/${SWC_NAME}">
+			<source-path path-element="${APP_SRC}"/>
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+			<include-sources dir="${APP_SRC}/com/github/sugamasao" includes="*"/>
+		</compc>
+	</target>
 
 	<!-- cleanの実行 -->
 	<target name="clean">
