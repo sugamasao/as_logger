@@ -40,7 +40,7 @@
 	<!-- asdocの実行 -->
 	<target name="document">
 		<mkdir dir="${DOCUMENT_PATH}" />
-		<exec executable="${ASDOC_EXE}" failOnError="false">
+		<exec executable="${ASDOC_EXE}" failOnError="true">
 			<arg line='-source-path ${APP_SRC} ${FLEX_HOME}/frameworks/'/>
 			<arg line='-doc-sources ${APP_SRC}/com/github/sugamasao/as_logger/'/>
 			<arg line='-window-title "as_logger"'/>
