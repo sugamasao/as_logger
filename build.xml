@@ -11,7 +11,7 @@
 	<property name="APP_SRC" value="${APP_ROOT}/src"/>
 
 	<!-- 出力先ディレクトリの設定  -->
-	<property name="BIN_OUTPUT" value="${APP_ROOT}/bin"/>
+	<property name="BUILD_PATH" value="${APP_ROOT}/build"/>
 	<property name="DOCUMENT_PATH" value="${APP_ROOT}/document"/>
 
 	<!-- アプリケーションの名前 -->
@@ -34,7 +34,7 @@
 
 	<!-- cleanの実行 -->
 	<target name="clean">
-		<delete file="${BIN_OUTPUT}/${APP_NAME}.swf" />
+		<delete dir="${BUILD_PATH}" failOnError="false" includeEmptyDirs="true" />
 		<delete dir="${DOCUMENT_PATH}" failOnError="false" includeEmptyDirs="true" />
 	</target>
 
